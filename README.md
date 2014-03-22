@@ -18,13 +18,13 @@ Repositório
 
 Projeto
 ---------
-![Projeto](/Projeto.png "Projeto")
+![Projeto](https://dl.dropboxusercontent.com/s/k9ydolezy7dji1g/Projeto.png "Projeto")
 
 Fases
 -----------
-![Fases](/Fases.png "Fases")
+![Fases](https://dl.dropboxusercontent.com/s/45drnqtaojjqqei/Fases.png "Fases")
 
 Interfaces
 -----------
-![Interfaces](/Interfaces.png "Interfaces")
+![Interfaces](https://dl.dropboxusercontent.com/s/46r2wf276wl3mam/Interfaces.png "Interfaces")
 
