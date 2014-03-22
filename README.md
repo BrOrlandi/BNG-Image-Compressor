@@ -18,13 +18,13 @@ Repositório
 
 Projeto
 ---------
-![Projeto](Projeto.png "Projeto")
+![Projeto](/Projeto.png "Projeto")
 
 Fases
 -----------
-![Fases](Fases.png "Fases")
+![Fases](/Fases.png "Fases")
 
 Interfaces
 -----------
-![Interfaces](Interfaces.png "Interfaces")
+![Interfaces](/Interfaces.png "Interfaces")
 
