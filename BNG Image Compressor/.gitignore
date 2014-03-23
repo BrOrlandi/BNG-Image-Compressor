@@ -1,0 +1,11 @@
+# Objects
+*.o
+
+# Executables
+*.exe
+
+# Diretorio de binario do codeblocks
+bin/
+
+# Diretorio objects do codeblocks
+obj/
