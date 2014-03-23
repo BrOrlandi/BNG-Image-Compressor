@@ -4,6 +4,9 @@
 # Executables
 *.exe
 
+# Codeblocks config file
+*.depend
+
 # Diretorio de binario do codeblocks
 bin/
 
