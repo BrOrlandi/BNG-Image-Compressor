@@ -44,6 +44,8 @@ typedef struct BMPData {
 
 void BMPData_init(BMPData *bmp, FILE *file);
 
+void BMPData_print(BMPData *bmp);
+
 void BMPData_destroy(BMPData *bmp);
 
 #endif // BITMAP_H

@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
     image = fopen(argv[1], "rb");
 
     BMPData_init(&bitmap, image);
+    BMPData_print(&bitmap);
     BMPData_destroy(&bitmap);
 
     return 0;
