@@ -31,7 +31,15 @@ void BMPData_init(BMPData *bmp, FILE *image) {
 
     // Allocates memory to the whole bitmap
     // The constant 3 indicates the three colors we're working on
-    bmp->data = calloc(3*width*height, sizeof(char));
+    bmp->data = calloc((3*width*height) + bmp->trash_amount, sizeof(char));
+
+    int i = 0;
+    char data_block;
+    // Populating the matrix
+    while(fread(&data_block, 1, sizeof(char), image)) {
+        bmp->data[i] = data_block;
+        i++;
+    }
 }
 
 void BMPData_print(BMPData *bmp) {
