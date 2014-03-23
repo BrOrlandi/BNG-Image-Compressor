@@ -5,7 +5,7 @@ Autores
 -----------
 - Bruno Henrique Orlandi		Nº 7573378
 - Guilherme Barranco Piva		Nº _______
-- Nihey Luz Takizawa			Nº _______
+- Nihey Luz Takizawa			Nº 7572912
 
 
 Repositório
