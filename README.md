@@ -1,10 +1,10 @@
-BNG Image Compressor
+﻿BNG Image Compressor
 =====================
 
 Autores
 -----------
 - Bruno Henrique Orlandi		Nº 7573378
-- Guilherme Barranco Piva		Nº _______
+- Guilherme Barranco Piva		Nº 7696462
 - Nihey Luz Takizawa			Nº 7572912
 
 
