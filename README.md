@@ -11,8 +11,7 @@ Autores
 Repositório
 -------------
 
-- Projetos separados em Compressor e Decompressor
-- Usar CodeBlocks
+- Projeto no CodeBlocks versão 13.12
 - Windows
 - TAB = 4 Espaços
 
