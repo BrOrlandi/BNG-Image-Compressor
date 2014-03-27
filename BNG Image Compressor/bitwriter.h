@@ -10,7 +10,7 @@ typedef struct BitWriter {
     // Number of bit that where currently written in the buffer
     int bit_number;
     // File pointer for writting
-    FILE *file
+    FILE *file;
 
 } BitWriter;
 

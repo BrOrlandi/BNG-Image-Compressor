@@ -6,7 +6,7 @@ int BitWriter_init(BitWriter *writer, char *filename) {
 
     writer->file = fopen(filename, "w");
 
-    return writer->file;
+    return (int) writer->file;
 }
 
 int BitWriter_write_bit(BitWriter *writer, unsigned char bit) {
@@ -30,8 +30,9 @@ int BitWriter_write_bits(BitWriter *writer, unsigned char bitstream, int count) 
     int i;
     int retval = 0;
     for(i = 0; i < count; i++) {
-        retval |= BitWriter_write_bit(writer, bitstream);
-        bitstream >>= 1;
+        // Get the left most bit and walks to the right untill the end
+        unsigned char bit = (bitstream & (1 << (count - i - 1)))?1:0;
+        retval |= BitWriter_write_bit(writer, bit);
     }
     return retval;
 }
