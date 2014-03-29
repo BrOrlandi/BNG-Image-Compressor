@@ -41,20 +41,40 @@ typedef struct BMPData {
     // Image raw data
     unsigned char *data;
 } BMPData;
-
+/**
+    Initialize the BMP struct loading the header and the data from file
+*/
 void BMPData_init(BMPData *bmp, FILE *file);
 
+/**
+    Print the BMP Header
+*/
 void BMPData_print(BMPData *bmp);
 
+/**
+    Returns a pointer to a given index of the block 8x8 pixels, the color(0=B, 1=G, 2=R) and the coordinates X and Y.
+*/
 unsigned char *BMPData_getp(BMPData *bmp, int index, int color, int x, int y);
 
+/**
+    Returns the value of a given index of the block 8x8 pixels, the color(0=B, 1=G, 2=R) and the coordinates X and Y.
+*/
 unsigned char BMPData_get(BMPData *bmp, int index, int color, int x, int y);
 
+/**
+    Set the value to a given index of the block 8x8 pixels, the color(0=B, 1=G, 2=R) and the coordinates X and Y.
+*/
 void BMPData_set(BMPData *bmp, int index, int color,
                  int x, int y, unsigned char value);
 
+/**
+    Free the memory allocated to the BMP data
+*/
 void BMPData_destroy(BMPData *bmp);
 
+/**
+    Converts the Header data to a char array for file writing.
+*/
 void BMPData_HeaderToChar(BMPData *bmp, unsigned char **data, unsigned int *size);
 
 #endif // BITMAP_H
