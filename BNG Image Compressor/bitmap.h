@@ -55,4 +55,6 @@ void BMPData_set(BMPData *bmp, int index, int color,
 
 void BMPData_destroy(BMPData *bmp);
 
+void BMPData_HeaderToChar(BMPData *bmp, unsigned char **data, unsigned int *size);
+
 #endif // BITMAP_H
