@@ -3,6 +3,9 @@
 
 #include "bitmap.h"
 #include "bitwriter.h"
+#include "huffman.h"
+#include "fileio.h"
+#include <string.h>
 
 
 int main(int argc, char* argv[]) {
@@ -12,23 +15,43 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Exemplo bitmap
-    FILE *image;
-    BMPData bitmap;
+    char *fileName = argv[1]; // name of the file to be compressed or decompressed
 
-    image = fopen(argv[1], "rb");
+    if(endsWith(fileName,".bng")){ // check if the file is an '.bng' file, if it is, decompress
 
-    BMPData_init(&bitmap, image);
+        unsigned int size; // size of the file to be calculated
+        unsigned char *data; // new data after decompress
 
-    unsigned char *dataH;
-    unsigned int sizeH;
-    BMPData_HeaderToChar(&bitmap, &dataH, &sizeH);
+        huffmanFileRead(fileName,&data,&size);
 
-    BMPData_print(&bitmap);
-    BMPData_print_block(&bitmap, 0);
+        // here can make others manipulations to the data
+
+        printf("Saving the uncompressed file.\n");
+        int len = strlen(fileName);
+        fileName[len-4] = '\0';
+        fileWrite(fileName,data,size);
+        printf("File decompressed: %s\n",fileName);
+    }
+    else{ // otherwise, the file will be compres8sed in a bng file
+
+        FILE *image;
+        BMPData bitmap;
+
+        unsigned int size;
+        image = fopen(fileName, "rb");
+        unsigned char *data = fileRead(fileName,&size);
+        if(image == NULL){
+            printf("File not found: %s\n",fileName);
+            exit(1);
+        }
+        BMPData_init(&bitmap, image);
+        BMPData_print(&bitmap);
 
 
-    BMPData_destroy(&bitmap);
+        huffmanFileWrite(fileName,data,size);
 
+        BMPData_destroy(&bitmap);
+
+    }
     return 0;
 }

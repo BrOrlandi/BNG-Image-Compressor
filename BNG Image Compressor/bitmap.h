@@ -40,6 +40,10 @@ typedef struct BMPData {
 
     // Image raw data
     unsigned char *data;
+    unsigned int dataSize;
+
+    //unsigned char ****blocks; // blocks[index of block][color][x][y]; blocks of 8x8 pixels
+    //unsigned int n_blocks; // number of blocks of 8x8 pixels
 } BMPData;
 /**
     Initialize the BMP struct loading the header and the data from file
@@ -75,6 +79,6 @@ void BMPData_destroy(BMPData *bmp);
 /**
     Converts the Header data to a char array for file writing.
 */
-void BMPData_HeaderToChar(BMPData *bmp, unsigned char **data, unsigned int *size);
+void BMPData_HeaderToChar(BMPData *bmp, unsigned char *data);
 
 #endif // BITMAP_H

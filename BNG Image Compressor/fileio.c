@@ -150,7 +150,7 @@ int huffmanFileWrite(char name[], unsigned char *data, unsigned int size){
 
     char fileNewName[strlen(name) + 4];
     strcpy(fileNewName,name);
-    strcat(fileNewName,".hff");
+    strcat(fileNewName,".bng");
 
     printf("Compressing file in: %s\n",fileNewName);
 
