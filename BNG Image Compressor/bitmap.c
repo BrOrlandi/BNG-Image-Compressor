@@ -42,6 +42,19 @@ void BMPData_init(BMPData *bmp, FILE *image) {
     }
 }
 
+unsigned char *BMPData_getp(BMPData *bmp, int index, int color, int x, int y) {
+    return &(bmp->data[(index*192)+(color*64)+(x*8)+y]);
+}
+
+unsigned char BMPData_get(BMPData *bmp, int index, int color, int x, int y) {
+    return bmp->data[(index*192)+(color*64)+(x*8)+y];
+}
+
+void BMPData_set(BMPData *bmp, int index, int color,
+                 int x, int y, unsigned char value) {
+    bmp->data[(index*192)+(color*64)+(x*8)+y] = value;
+}
+
 void BMPData_print(BMPData *bmp) {
     printf("signature:   (x) %x\n", bmp->signature);
     printf("file_size:   (d) %u\n", bmp->file_size);
@@ -61,6 +74,18 @@ void BMPData_print(BMPData *bmp) {
     printf("color_imp:   (d) %u\n\n", bmp->color_imp);
 
     printf("trash_amount:(d) %u\n", bmp->trash_amount);
+}
+
+void BMPData_print_block(BMPData *bmp, int index) {
+    int i, j, k;
+    for(i = 0; i < 3; i++) {
+        for(j = 0; j < 8; j++) {
+            for(k = 0; k < 8; k++) {
+                printf("%d ", BMPData_get(bmp, index, i, j, k));
+            }
+            printf("\n");
+        }
+    }
 }
 
 void BMPData_destroy(BMPData *bmp) {

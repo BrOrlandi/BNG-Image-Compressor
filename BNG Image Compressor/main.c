@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
 
     BMPData_init(&bitmap, image);
     BMPData_print(&bitmap);
+    BMPData_print_block(&bitmap, 0);
     BMPData_destroy(&bitmap);
 
     // Exemplo escrita bit a bit

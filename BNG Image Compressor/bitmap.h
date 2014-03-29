@@ -46,6 +46,13 @@ void BMPData_init(BMPData *bmp, FILE *file);
 
 void BMPData_print(BMPData *bmp);
 
+unsigned char *BMPData_getp(BMPData *bmp, int index, int color, int x, int y);
+
+unsigned char BMPData_get(BMPData *bmp, int index, int color, int x, int y);
+
+void BMPData_set(BMPData *bmp, int index, int color,
+                 int x, int y, unsigned char value);
+
 void BMPData_destroy(BMPData *bmp);
 
 #endif // BITMAP_H
