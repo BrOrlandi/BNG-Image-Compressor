@@ -48,4 +48,6 @@ void BMPData_print(BMPData *bmp);
 
 void BMPData_destroy(BMPData *bmp);
 
+void BMPData_HeaderToChar(BMPData *bmp, unsigned char **data, unsigned int *size);
+
 #endif // BITMAP_H

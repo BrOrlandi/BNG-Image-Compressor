@@ -4,7 +4,7 @@ int BitWriter_init(BitWriter *writer, char *filename) {
     writer->buffer = 0;
     writer->bit_number = 0;
 
-    writer->file = fopen(filename, "w");
+    writer->file = fopen(filename, "wb");
 
     return (int) writer->file;
 }

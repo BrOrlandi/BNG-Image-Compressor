@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #ifndef BITWRITER
+#define BITWRITER
 
 typedef struct BitWriter {
 
