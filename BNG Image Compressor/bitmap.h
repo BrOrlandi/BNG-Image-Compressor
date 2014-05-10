@@ -40,15 +40,45 @@ typedef struct BMPData {
 
     // Image raw data
     unsigned char *data;
+
+    // Image blocks
+    unsigned char *block_data;
+
+    // Amount of bytes contained in the image in a 24bit bitmap it is WIDTH*HEIGHT*3
     unsigned int dataSize;
 
-    //unsigned char ****blocks; // blocks[index of block][color][x][y]; blocks of 8x8 pixels
-    //unsigned int n_blocks; // number of blocks of 8x8 pixels
+    // Number of accessible blocks
+    int block_data_length;
 } BMPData;
+/**
+    Returns the offset needed to access block data in a position based
+    on a 4-dimensional array (block[index][x][y][color])
+*/
+int block_offset(int index, int x, int y, int color);
+
+/**
+    Returns the offset needed to access image data in a position based
+    on a 3-dimensional array (image[x][y][color])
+*/
+int matrix_offset(BMPData *bmp, int x, int y, int color);
+
 /**
     Initialize the BMP struct loading the header and the data from file
 */
 void BMPData_init(BMPData *bmp, FILE *file);
+
+/**
+    Separate raw_data into blocks like block[block_data_length][8][8][3]
+*/
+
+void BMPData_blockify(BMPData *bmp);
+
+/**
+    Join block data back into a single vector representing the whole image
+    as a vector
+*/
+
+void BMPData_unblockify(BMPData *bmp);
 
 /**
     Print the BMP Header
@@ -56,20 +86,9 @@ void BMPData_init(BMPData *bmp, FILE *file);
 void BMPData_print(BMPData *bmp);
 
 /**
-    Returns a pointer to a given index of the block 8x8 pixels, the color(0=B, 1=G, 2=R) and the coordinates X and Y.
+    Print the block of the specified color and index
 */
-unsigned char *BMPData_getp(BMPData *bmp, int index, int color, int x, int y);
-
-/**
-    Returns the value of a given index of the block 8x8 pixels, the color(0=B, 1=G, 2=R) and the coordinates X and Y.
-*/
-unsigned char BMPData_get(BMPData *bmp, int index, int color, int x, int y);
-
-/**
-    Set the value to a given index of the block 8x8 pixels, the color(0=B, 1=G, 2=R) and the coordinates X and Y.
-*/
-void BMPData_set(BMPData *bmp, int index, int color,
-                 int x, int y, unsigned char value);
+void BMPData_print_block(BMPData *bmp, int index, int color);
 
 /**
     Free the memory allocated to the BMP data

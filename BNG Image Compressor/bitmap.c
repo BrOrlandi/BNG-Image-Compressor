@@ -1,6 +1,15 @@
 #include "bitmap.h"
 
 
+int block_offset(int index, int x, int y, int color) {
+    return (index*8*8*3 + x*8*3 + y*3 + color);
+}
+
+int matrix_offset(BMPData *bmp, int x, int y, int color) {
+    int width = bmp->img_width;
+    return (x*width*3 + y*3 + color);
+}
+
 void BMPData_init(BMPData *bmp, FILE *image){
 
     fread(&(bmp->signature), 1, 2, image);
@@ -33,6 +42,8 @@ void BMPData_init(BMPData *bmp, FILE *image){
     // The constant 3 indicates the three colors we're working on
     bmp->dataSize = (3*width*height) + bmp->trash_amount;
     bmp->data = calloc(bmp->dataSize, sizeof(char));
+    bmp->block_data = (unsigned char*) calloc(bmp->dataSize, sizeof(unsigned char));
+
     int i = 0;
     char data_block;
     // Populating the matrix
@@ -41,39 +52,45 @@ void BMPData_init(BMPData *bmp, FILE *image){
         i++;
     }
 
-/*
-    unsigned int blocks_x = bmp->img_width/8;
-    unsigned int blocks_y = bmp->img_height/8;
-    bmp->n_blocks = blocks_x*blocks_y;
-    bmp->blocks = (unsigned char ****)malloc(sizeof(unsigned char ***) * bmp->n_blocks);
-    int j,k;
-    for(i=0;i<bmp->n_blocks;i++)
-    {
-        // for each block alloc 3 colors arrays
-        bmp->blocks[i] = (unsigned char ***)malloc(sizeof(unsigned char **) * 3);
-        // for each color array allocs 8x8 values
-        for(j=0;j<3;j++){
-            bmp->blocks[i][j] = (unsigned char **)malloc(sizeof(unsigned char *) * 8);
-            // for each of the 8 lines allocated alloc 8 columns
-            for(k=0;k<8;k++){
-                bmp->blocks[i][j][k] = (unsigned char *)malloc(sizeof(unsigned char) * 8);
+    BMPData_blockify(bmp);
+}
+
+void BMPData_blockify(BMPData *bmp) {
+    int i, j, k, x, y;
+    int index = 0;
+
+    int width = bmp->img_width;
+    int height = bmp->img_height;
+
+    for(y = 0; y < width; y += 8)
+    for(x = 0; x < height; x += 8, index++)
+    for(i = 0; i < 8; i++) {
+        for(j = 0; j < 8; j++) {
+            for(k = 0; k < 3; k++) {
+                unsigned char value = bmp->data[matrix_offset(bmp, x+i, y+j, k)];
+                bmp->block_data[block_offset(index, i, j, k)] = value;
             }
         }
     }
-    */
 }
 
-unsigned char *BMPData_getp(BMPData *bmp, int index, int color, int x, int y) {
-    return &(bmp->data[(index*192)+(x*24)+(y*3)+color]);
-}
+void BMPData_unblockify(BMPData *bmp) {
+    int i, j, k, x, y;
+    int index = 0;
 
-unsigned char BMPData_get(BMPData *bmp, int index, int color, int x, int y) {
-    return bmp->data[(index*192)+(x*24)+(y*3)+color];
-}
+    int width = bmp->img_width;
+    int height = bmp->img_height;
 
-void BMPData_set(BMPData *bmp, int index, int color,
-                 int x, int y, unsigned char value) {
-    bmp->data[(index*192)+(x*24)+(y*3)+color] = value;
+    for(y = 0; y < width; y += 8)
+    for(x = 0; x < height; x += 8, index++)
+    for(i = 0; i < 8; i++) {
+        for(j = 0; j < 8; j++) {
+            for(k = 0; k < 3; k++) {
+                unsigned char value = bmp->block_data[block_offset(index, i, j, k)];
+                bmp->data[matrix_offset(bmp, x+i, y+j, k)] = value;
+            }
+        }
+    }
 }
 
 void BMPData_print(BMPData *bmp) {
@@ -97,20 +114,20 @@ void BMPData_print(BMPData *bmp) {
     printf("trash_amount:(d) %u\n", bmp->trash_amount);
 }
 
-void BMPData_print_block(BMPData *bmp, int index) {
-    int i, j, k;
-    for(i = 0; i < 3; i++) {
+void BMPData_print_block(BMPData *bmp, int index, int color) {
+    int i, j;
+    for(i = 0; i < 8; i++) {
         for(j = 0; j < 8; j++) {
-            for(k = 0; k < 8; k++) {
-                printf("%d ", BMPData_get(bmp, index, i, j, k));
-            }
-            printf("\n");
+            printf("%d ", bmp->block_data[block_offset(index, i, j, color)]);
         }
+        printf("\n");
     }
+    printf("\n");
 }
 
 void BMPData_destroy(BMPData *bmp) {
     free(bmp->data);
+    free(bmp->block_data);
 }
 
 void BMPData_HeaderToChar(BMPData *bmp, unsigned char *data){
