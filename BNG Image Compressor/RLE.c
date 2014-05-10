@@ -23,6 +23,7 @@ int main()
         }
 
     //IMPRESSÃO DA MATRIZ ORIGINAL
+    printf("MATRIZ ORIGINAL:\n");
     for(i=0; i<L; i++)
     {
         for(j=0; j<C; j++)
@@ -71,12 +72,9 @@ int main()
     }
 
     //IMPRESSÃO DO VETOR
-    printf("\n\n\n");
+    printf("\n\n\nVETORIZACAO DA MATRIZ:\n");
     for( k=0; k<(L*C); k++)
         printf("%d ",output_buffer[k]);
-
-
-    printf("\n\n\n");
 
 
     //CODIFICAÇÃO POR CARREIRA
@@ -136,8 +134,42 @@ int main()
     }
 
     //IMPRESSÃO DO VETOR CODIFICADO
-    printf("\n\n\n");
+    printf("\n\n\nVETOR CODIFICADO:\n");
     for( k=0; k<writer; k++)
         printf("%d ",rle[k]);
+
+    //DECODIFICAÇÃO
+    int rle_dec[L*C];
+    cont = 0;
+    for(i=0; i<writer; i++)
+    {
+        if(i == writer-1)
+        {
+            rle_dec[cont] = rle[i];
+            cont++;
+        }
+        else
+        {
+            if(rle[i] == flag)
+            {
+                for(j=0; j<rle[i+1]; j++)
+                {
+                    rle_dec[cont] = rle[i+2];
+                    cont++;
+                }
+                i = i+2;
+            }
+            else
+            {
+                rle_dec[cont] = rle[i];
+                cont++;
+            }
+        }
+    }
+
+    //IMPRESSÃO DO VETOR DECODIFICADO
+    printf("\n\n\nVETOR DECODIFICADO:\n");
+    for( k=0; k<L*C; k++)
+        printf("%d ",rle_dec[k]);
 
 }

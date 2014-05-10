@@ -1,0 +1,55 @@
+# depslib dependency file v1.0
+1399730299 source:c:\users\nihey\documents\github\bng\bng image compressor\main.c
+	<stdio.h>
+	<stdlib.h>
+	"bitmap.h"
+	"bitwriter.h"
+	"huffman.h"
+	"fileio.h"
+	<string.h>
+
+1399731525 c:\users\nihey\documents\github\bng\bng image compressor\bitmap.h
+	<stdlib.h>
+	<stdio.h>
+
+1399730765 source:c:\users\nihey\documents\github\bng\bng image compressor\bitmap.c
+	"bitmap.h"
+
+1396052089 source:c:\users\nihey\documents\github\bng\bng image compressor\bitwriter.c
+	"bitwriter.h"
+
+1396052089 c:\users\nihey\documents\github\bng\bng image compressor\bitwriter.h
+	<stdlib.h>
+	<stdio.h>
+
+1396052089 c:\users\nihey\documents\github\bng\bng image compressor\huffman.h
+	"tree.h"
+
+1396052089 c:\users\nihey\documents\github\bng\bng image compressor\tree.h
+
+1396052089 c:\users\nihey\documents\github\bng\bng image compressor\fileio.h
+	"tree.h"
+
+1396052089 source:c:\users\nihey\documents\github\bng\bng image compressor\bitreader.c
+	"bitreader.h"
+
+1396052089 c:\users\nihey\documents\github\bng\bng image compressor\bitreader.h
+	<stdlib.h>
+	<stdio.h>
+
+1396052089 source:c:\users\nihey\documents\github\bng\bng image compressor\huffman.c
+	"huffman.h"
+	"tree.h"
+	<string.h>
+	"bitwriter.h"
+
+1396052089 source:c:\users\nihey\documents\github\bng\bng image compressor\tree.c
+	"tree.h"
+	<stdlib.h>
+
+1399730299 source:c:\users\nihey\documents\github\bng\bng image compressor\fileio.c
+	<stdio.h.>
+	<stdlib.h.>
+	"fileio.h"
+	"bitreader.h"
+
