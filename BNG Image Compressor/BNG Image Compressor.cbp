@@ -11,6 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="rio.bmp.bng" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -35,13 +36,29 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="bitmap.h" />
+		<Unit filename="bitreader.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bitreader.h" />
 		<Unit filename="bitwriter.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="bitwriter.h" />
+		<Unit filename="fileio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fileio.h" />
+		<Unit filename="huffman.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="huffman.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="tree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tree.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
