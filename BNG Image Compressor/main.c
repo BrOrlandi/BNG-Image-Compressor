@@ -3,6 +3,8 @@
 
 #include "bitmap.h"
 #include "huffman/huffman.h"
+#include "zigzag_vector.h"
+#include "run_len.h"
 #include <string.h>
 
 
@@ -37,37 +39,85 @@ int main(int argc, char* argv[]) {
 
         printf("Decompressing: %s\n", inputFile);
 
-        unsigned int size; // size of the file to be calculated
         unsigned char *data; // new data after decompress
 
         Huffman_file_decompress(&h,inputFile);
-        data = h.uc_data[0];
-        size = h.uc_sizes[0];
 
-        // here can make others manipulations to the data
-        fileWrite(outputFile,data,size);
+        data = h.uc_data[0];
+
+        int i = 0;
+        int width, height;
+
+        // Recuperando os dados que indicam a altura e largura da imagem
+        // Estes dados fora codificados em run_len.c
+        width = data[i++];
+        width |= (data[i++] & 255) << 8;
+        width |= (data[i++] & 255) << 16;
+        width |= (data[i++] & 255) << 24;
+
+        height = data[i++];
+        height |= (data[i++] & 255) << 8;
+        height |= (data[i++] & 255) << 8;
+        height |= (data[i++] & 255) << 8;
+
+        // Decode run_length encoded image
+        unsigned char *decoded = decode(data, width*height*3);
+
+        BMPData bitmap;
+        BMPData_from_raw(&bitmap, decoded, width, height);
+        BMPData_print(&bitmap);
+
+        unsigned char *file_data = calloc(bitmap.file_size, sizeof(unsigned char));
+        BMPData_HeaderToChar(&bitmap, file_data);
+
+        // Copia os dados do bitmap para o buffer que será usado para saída
+        for(i = 0; i < bitmap.dataSize; i++) {
+            file_data[i+54] = bitmap.data[i];
+        }
+
+
+        fileWrite(outputFile, file_data, bitmap.file_size);
         printf("Image decompressed to: %s\n",outputFile);
     }
     else{ // otherwise, the file will be compres8sed in a bng file
 
-        //FILE *image;
-        //BMPData bitmap;
+        FILE *image;
+        BMPData bitmap;
 
-        //unsigned int size;
-        //image = fopen(fileName, "rb");
-        //unsigned char *data = fileRead(fileName,&size);
-        //if(image == NULL){
-        //    printf("File not found: %s\n",fileName);
-        //    exit(1);
-        //}
-       // BMPData_init(&bitmap, image);
-       // BMPData_print(&bitmap);
+        image = fopen(inputFile, "rb");
+        if(image == NULL){
+            printf("File not found: %s\n",inputFile);
+            exit(1);
+        }
+        BMPData_init(&bitmap, image);
 
-
-        unsigned int size; // size of the file to be calculated
+//        unsigned char *vector = vectorize(&bitmap);
+//        unsigned char *blocks = unvectorize(vector, bitmap.dataSize);
+//
+//        int i;
+//        for(i = 0; i < bitmap.dataSize; i++) {
+//            if(blocks[i] != bitmap.block_data[i]) {
+//                printf("%d: (%d) != (%d)\n", i, blocks[i], bitmap.block_data[i]);
+//            }
+//        }
+//        free(blocks);
+//        free(vector);
+        BMPData_print(&bitmap);
+        int size;
         unsigned char *data; // the data read from the file
 
-        data = fileRead(inputFile,&size); // read the file and stores in data
+        // Codificação por carreira
+        data = encode(bitmap.block_data, bitmap.img_width, bitmap.img_height, &size);
+        unsigned char *decoded = decode(data, bitmap.img_width*bitmap.img_height*3);
+
+//        int i = 0;
+//        for(i = 0; i < bitmap.img_width*bitmap.img_height*3; i++) {
+//            if(bitmap.block_data[i] == 0)
+//                bitmap.block_data[i]++;
+//            if(decoded[i] != bitmap.block_data[i]) {
+//                printf("%d: (%d) != (%d)\n", i, decoded[i], bitmap.block_data[i]);
+//           }
+//        }
 
         printf("Compressing: %s\n", inputFile);
         Huffman_add_data_block(&h,data,size);
@@ -77,8 +127,8 @@ int main(int argc, char* argv[]) {
         Huffman_compress_data_to_file(&h,outputFile);
         printf("Image compressed to: %s\n",outputFile);
 
-        //BMPData_destroy(&bitmap);
-
+        BMPData_destroy(&bitmap);
+        free(data);
     }
     return 0;
 }

@@ -100,4 +100,10 @@ void BMPData_destroy(BMPData *bmp);
 */
 void BMPData_HeaderToChar(BMPData *bmp, unsigned char *data);
 
+/**
+    Builds bitmap data from a raw array of blocks
+*/
+
+void BMPData_from_raw(BMPData *bmp, unsigned char *raw, int width, int height);
+
 #endif // BITMAP_H
