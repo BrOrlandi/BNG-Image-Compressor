@@ -16,11 +16,19 @@ void Huffman_init(Huffman *h){
 
 
 void Huffman_add_data_block(Huffman *h, unsigned char *data,unsigned int size){
+    printf("size = %d\n",size);
     h->uc_blocks += 1;
+    printf("h->uc_blocks = %d\n",h->uc_blocks);
     h->uc_data = (unsigned char **)realloc(h->uc_data, sizeof(unsigned char *)*h->uc_blocks);
+    printf("c");
     h->uc_sizes = (unsigned int *)realloc(h->uc_sizes, sizeof(unsigned int)*h->uc_blocks);
+    printf("d");
     h->uc_data[h->uc_blocks-1] = data;
+    printf("h->uc_data[h->uc_blocks-1][0] = %d\n",h->uc_data[h->uc_blocks-1][0]);
+    printf("size = %d\n",size);
+    printf("h->uc_blocks = %d\n",h->uc_blocks);
     h->uc_sizes[h->uc_blocks-1] = size;
+    printf("h->uc_sizes[h->uc_blocks-1] = %d\n",0);
 }
 
 void Huffman_count_frequencies(Huffman *h){

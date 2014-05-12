@@ -74,8 +74,32 @@ int main(int argc, char* argv[]) {
         unsigned char *data; // the data read from the file
 
         // Codificação por carreira
-        data = RLE_encode(bitmap.block_data, bitmap.img_width, bitmap.img_height, &size);
-//        unsigned char *decoded = RLE_decode(data, bitmap.img_width*bitmap.img_height*3);
+        //data = RLE_encode(bitmap.block_data, bitmap.img_width, bitmap.img_height, &size);
+        data = bitmap.block_data;
+        size = bitmap.img_width*bitmap.img_height*3;
+        printf("bitmap.img_width = %d\n",bitmap.img_width);
+        printf("bitmap.img_height = %d\n",bitmap.img_height);
+        printf("decoded size = %d\n",bitmap.img_width*bitmap.img_height*3);
+        printf("encoded size = %d\n",size);
+
+        int i;
+        printf("\n\n");
+        for(i=0;i<size;i++){
+            printf("%d ", data[i]);
+        }
+        printf("\n\n");
+
+/*
+        unsigned int w, h;
+        unsigned char *decoded = RLE_decode(data,&w,&h);
+        printf("w = %d\n",w);
+        printf("h = %d\n",h);
+        int s = w*h*3;
+        for(i=0;i<s;i++){
+            printf("%d ", decoded[i]);
+        }
+        printf("\n\n");
+//*/
 
 //        int i = 0;
 //        for(i = 0; i < bitmap.img_width*bitmap.img_height*3; i++) {
@@ -87,6 +111,7 @@ int main(int argc, char* argv[]) {
 //        }
 
         Huffman_add_data_block(&h,data,size);
+        printf("aaa");
 
         Huffman_apply(&h);
 
@@ -94,7 +119,7 @@ int main(int argc, char* argv[]) {
         printf("Image compressed to: %s\n",outputFile);
 
         BMPData_destroy(&bitmap);
-        //free(data);
+        free(data);
 
     }
     else{ // otherwise, the file will be decompressed in a bng file
@@ -109,19 +134,6 @@ int main(int argc, char* argv[]) {
         int i = 0;
         int width, height;
 
-        // Recuperando os dados que indicam a altura e largura da imagem
-        // Estes dados fora codificados em run_len.c
-        /*
-        width = data[i++];
-        width |= (data[i++] & 255) << 8;
-        width |= (data[i++] & 255) << 16;
-        width |= (data[i++] & 255) << 24;
-
-        height = data[i++];
-        height |= (data[i++] & 255) << 8;
-        height |= (data[i++] & 255) << 8;
-        height |= (data[i++] & 255) << 8;
-*/
         // Decode run_length encoded image
         unsigned char *decoded = RLE_decode(data, &width, &height);
 

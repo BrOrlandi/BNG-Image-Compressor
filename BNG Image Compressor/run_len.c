@@ -96,10 +96,13 @@ unsigned char *RLE_decode(unsigned char *rle, unsigned int *width, unsigned int 
     *width |= (rle[2] & 255) << 16;
     *width |= (rle[3] & 255) << 24;
 
+    printf("width decoded = %d\n",*width);
+
     *height = rle[4];
     *height |= (rle[5] & 255) << 8;
     *height |= (rle[6] & 255) << 8;
     *height |= (rle[7] & 255) << 8;
+    printf("height decoded = %d\n",*height);
 
     int i = 8, j, count = 0;
     int data_size = (*width) * (*height) * 3;
@@ -112,6 +115,7 @@ unsigned char *RLE_decode(unsigned char *rle, unsigned int *width, unsigned int 
             if(rle[i++] == RUN_LEN_FLAG) {
                 break;
             }
+            printf("rle[i-1] = %d\nrle[i] = %d\n",rle[i-1],rle[i]);
             for(j = 0; j < rle[i-1]; j++) {
                 rle_dec[count++] = rle[i];
             }
