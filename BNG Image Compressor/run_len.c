@@ -1,6 +1,6 @@
 #include "run_len.h"
 
-void sanitize(unsigned char *vector, int data_size) {
+void RLE_sanitize(unsigned char *vector, int data_size) {
     int i;
     for(i = 0; i < data_size; i++) {
         if(vector[i] == RUN_LEN_FLAG) {
@@ -9,11 +9,11 @@ void sanitize(unsigned char *vector, int data_size) {
     }
 }
 
-unsigned char *encode(unsigned char *vector, int width, int height, int *size) {
+unsigned char *RLE_encode(unsigned char *vector, int width, int height, int *size) {
     int data_size = width * height * 3;
     unsigned char *rle = (unsigned char*) calloc(data_size+2+8, sizeof(unsigned char));
 
-    sanitize(vector, data_size);
+    RLE_sanitize(vector, data_size);
 
     //CODIFICAÇÃO POR CARREIRA
     int count = 1; //CONTA A QUANTIDADE DE REPETIÇÕES
@@ -86,7 +86,7 @@ unsigned char *encode(unsigned char *vector, int width, int height, int *size) {
     return rle;
 }
 
-unsigned char *decode(unsigned char *rle, int data_size) {
+unsigned char *RLE_decode(unsigned char *rle, int data_size) {
 
     int i = 8, j, count = 0;
 
