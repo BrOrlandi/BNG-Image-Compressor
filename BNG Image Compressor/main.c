@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
 
         // Codificação por carreira
         data = RLE_encode(bitmap.block_data, bitmap.img_width, bitmap.img_height, &size);
-        unsigned char *decoded = RLE_decode(data, bitmap.img_width*bitmap.img_height*3);
+//        unsigned char *decoded = RLE_decode(data, bitmap.img_width*bitmap.img_height*3);
 
 //        int i = 0;
 //        for(i = 0; i < bitmap.img_width*bitmap.img_height*3; i++) {
@@ -123,10 +123,10 @@ int main(int argc, char* argv[]) {
         height |= (data[i++] & 255) << 8;
 */
         // Decode run_length encoded image
-        unsigned char *decoded = RLE_decode(data, width*height*3);
+        unsigned char *decoded = RLE_decode(data, &width, &height);
 
         BMPData bitmap;
-        //BMPData_from_raw(&bitmap, decoded, width, height);
+        BMPData_from_raw(&bitmap, decoded, width, height);
         //BMPData_print(&bitmap);
 
         unsigned char *file_data = calloc(bitmap.file_size, sizeof(unsigned char));
