@@ -49,6 +49,7 @@ unsigned char *vectorize(BMPData *bmp) {
             }
         }
     }
+    /*
     for(i = 0; i < bmp->dataSize; i++) {
         if(i % 64 == 0) {
             printf("\n\n");
@@ -56,6 +57,8 @@ unsigned char *vectorize(BMPData *bmp) {
         printf("%d ", zigzag[i]);
     }
     printf("\n");
+    */
+
     return zigzag;
 }
 
@@ -107,8 +110,8 @@ unsigned char *unvectorize(unsigned char *zigzag, int size) {
             }
         }
     }
-    printf("len -> %d\n", block_length);
-    printf("sz -> %d\n", size);
-    printf("i -> %d\n", index);
+    //printf("len -> %d\n", block_length);
+    //printf("sz -> %d\n", size);
+    //printf("i -> %d\n", index);
     return blocks;
 }

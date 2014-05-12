@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="rio.bmp.bng" />
+				<Option parameters='&quot;rio.bmp.hff&quot; -d &quot;decompressed rio.bmp&quot;' />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -36,29 +36,37 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="bitmap.h" />
-		<Unit filename="bitreader.c">
+		<Unit filename="huffman/bitreader.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="bitreader.h" />
-		<Unit filename="bitwriter.c">
+		<Unit filename="huffman/bitreader.h" />
+		<Unit filename="huffman/bitwriter.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="bitwriter.h" />
-		<Unit filename="fileio.c">
+		<Unit filename="huffman/bitwriter.h" />
+		<Unit filename="huffman/fileio.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="fileio.h" />
-		<Unit filename="huffman.c">
+		<Unit filename="huffman/fileio.h" />
+		<Unit filename="huffman/huffman.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="huffman.h" />
+		<Unit filename="huffman/huffman.h" />
+		<Unit filename="huffman/tree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="huffman/tree.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="tree.c">
+		<Unit filename="run_len.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="tree.h" />
+		<Unit filename="run_len.h" />
+		<Unit filename="zigzag_vector.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zigzag_vector.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
