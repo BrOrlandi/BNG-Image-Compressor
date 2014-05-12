@@ -98,8 +98,8 @@ unsigned char *RLE_decode(unsigned char *rle, unsigned int *width, unsigned int 
 
     *height = rle[4];
     *height |= (rle[5] & 255) << 8;
-    *height |= (rle[6] & 255) << 8;
-    *height |= (rle[7] & 255) << 8;
+    *height |= (rle[6] & 255) << 16;
+    *height |= (rle[7] & 255) << 24;
 
     int i = 8, j, count = 0;
     int data_size = (*width) * (*height) * 3;
