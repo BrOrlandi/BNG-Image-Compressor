@@ -8,9 +8,11 @@
 #include <string.h>
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
 
-    if(argc < 3){ // the file must be in the arguments
+    if(argc < 3)  // the file must be in the arguments
+    {
         printf("Usage: <input file> [optional -d] <output file>\n\t -d\tThe input file will be decompressed to output file.");
         return 0;
     }
@@ -19,15 +21,18 @@ int main(int argc, char* argv[]) {
     char *outputFile;
 
     char decompress = 0;
-    if(!strcmp(argv[2],"-d")){
+    if(!strcmp(argv[2],"-d"))  // modo descompressão
+    {
         decompress = 1;
-        if(argc < 4){
+        if(argc < 4)
+        {
             printf("Missing <output file>\n");
             return 0;
         }
         outputFile = argv[3];
     }
-    else{
+    else  // modo compressão
+    {
         outputFile = argv[2];
     }
 
@@ -35,21 +40,49 @@ int main(int argc, char* argv[]) {
 
     Huffman_init(&h);
 
-    if(!decompress){
+    if(!decompress)  // compressão
+    {
 
         FILE *image;
         BMPData bitmap;
 
         image = fopen(inputFile, "rb");
-        if(image == NULL){
+        if(image == NULL)
+        {
             printf("File not found: %s\n",inputFile);
             exit(1);
         }
         printf("Compressing: %s\n", inputFile);
 
-        BMPData_init(&bitmap, image);
+        BMPData_init(&bitmap, image); // inicializa variábeis BMP e separa em blocos
 
-        unsigned char *vector = vectorize(&bitmap);
+        //CODIGO USADO PARA TESTAR VECTORIZE
+        int i;
+        for (i=0; i<(bitmap.dataSize); i++)
+        {
+            //if(i%24 == 0)
+                //printf("\n");
+            //printf("%d ",bitmap.data[i]);
+        }
+        unsigned char *vector = vectorize(&bitmap); // vetorização de CADA bloco
+        unsigned char *blocks = unvectorize(vector, bitmap.img_width*bitmap.img_height*3);
+
+        printf("\n\n\n");
+        for (i=0; i<(bitmap.dataSize); i++)
+        {
+            if (bitmap.data[i] != blocks[i])
+            {
+                printf("errado");
+            }
+
+            //if(i%24 == 0)
+                //printf("\n");
+            //printf("%d ",blocks[i]);
+        }
+        //-----------------------------
+
+        //unsigned char *vector = vectorize(&bitmap); // vetorização de CADA bloco
+
         /*
         unsigned char *blocks = unvectorize(vector, bitmap.dataSize);
 
@@ -59,9 +92,9 @@ int main(int argc, char* argv[]) {
                 printf("%d: (%d) != (%d)\n", i, blocks[i], bitmap.block_data[i]);
             }
         }
-//        free(blocks);
-//        free(vector);
-/*
+        //        free(blocks);
+        //        free(vector);
+        /*
         BMPData_print(&bitmap);
         printf("\n--\n");
         BMPData_print_block(&bitmap,0,0);
@@ -70,7 +103,7 @@ int main(int argc, char* argv[]) {
         printf("\n--\n");
         BMPData_print_block(&bitmap,0,2);
         printf("\n--\n");
-*/
+        */
         unsigned int size;
         unsigned char *data; // the data read from the file
         //data = bitmap.block_data;
@@ -78,30 +111,63 @@ int main(int argc, char* argv[]) {
 
         // Codificação por carreira
         //data = RLE_encode(bitmap.block_data, bitmap.img_width, bitmap.img_height, &size);
+
+        /*int i;
+        printf("\n\n\n antes");
+        for (i=0; i<(bitmap.dataSize); i++)
+        {
+            //if(i%24 == 0)
+                //printf("\n");
+            printf("%d ",vector[i]);
+        }
+
         data = RLE_encode(vector, bitmap.img_width, bitmap.img_height, &size);
+
+        printf("\n\n\n compr");
+        for (i=0; i<size; i++)
+        {
+            //if(i%24 == 0)
+                //printf("\n");
+            printf("%d ",data[i]);
+        }
+
+        int width, height;
+        unsigned char *decoded = RLE_decode(vector, &width, &height);
+
+        printf("\n\n\n descom");
+        for (i=0; i<(bitmap.dataSize); i++)
+        {
+            //if(i%24 == 0)
+                //printf("\n");
+            printf("%d ",decoded[i]);
+        }*/
+
+
+        data = RLE_encode(vector, bitmap.img_width, bitmap.img_height, &size);
+
         //printf("bitmap.img_width = %d\n",bitmap.img_width);
         //printf("bitmap.img_height = %d\n",bitmap.img_height);
         //printf("decoded size = %d\n",bitmap.img_width*bitmap.img_height*3);
         //printf("encoded size = %d\n",size);
 
-/*
-        int i;
-        printf("\n\n");
-        for(i=0;i<size;i++){
-            printf("%d ", data[i]);
-        }
-        printf("\n\n");
+        /*
+                int i;
+                printf("\n\n");
+                for(i=0;i<size;i++){
+                    printf("%d ", data[i]);
+                }
+                printf("\n\n");
 
-        unsigned int w, h;
-        unsigned char *decoded = RLE_decode(data,&w,&h);
-        printf("w = %d\n",w);
-        printf("h = %d\n",h);
-        int s = w*h*3;
-        for(i=0;i<s;i++){
-            printf("%d ", decoded[i]);
-        }
-        printf("\n\n");
-//*/
+                unsigned int w, h;
+                unsigned char *decoded = RLE_decode(data,&w,&h);
+                printf("w = %d\n",w);
+                printf("h = %d\n",h);
+                int s = w*h*3;
+                for(i=0;i<s;i++){
+                    printf("%d ", decoded[i]);
+                }
+                printf("\n\n");
+        //*/
 
 //        int i = 0;
 //        for(i = 0; i < bitmap.img_width*bitmap.img_height*3; i++) {
@@ -123,7 +189,8 @@ int main(int argc, char* argv[]) {
         //free(data);
 //*/
     }
-    else{ // otherwise, the file will be decompressed in a bng file
+    else  // otherwise, the file will be decompressed in a bng file
+    {
         printf("Decompressing: %s\n", inputFile);
 
         unsigned char *data; // new data after decompress
@@ -148,7 +215,8 @@ int main(int argc, char* argv[]) {
         BMPData_HeaderToChar(&bitmap, file_data);
 
         // Copia os dados do bitmap para o buffer que será usado para saída
-        for(i = 0; i < bitmap.dataSize; i++) {
+        for(i = 0; i < bitmap.dataSize; i++)
+        {
             file_data[i+54] = bitmap.data[i];
         }
 

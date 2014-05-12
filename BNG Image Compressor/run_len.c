@@ -106,6 +106,7 @@ unsigned char *RLE_decode(unsigned char *rle, unsigned int *width, unsigned int 
 
     unsigned char *rle_dec = (unsigned char*) calloc(data_size, sizeof(unsigned char));
 
+    printf("\n\n\ndesc");
     while(1) {
         //printf("%d -> %d << %d\n", i, data_size, count);
         if(rle[i++] == RUN_LEN_FLAG) {

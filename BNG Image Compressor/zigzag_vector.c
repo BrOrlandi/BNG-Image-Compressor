@@ -56,8 +56,8 @@ unsigned char *vectorize(BMPData *bmp) {
         }
         printf("%d ", zigzag[i]);
     }
-    printf("\n");
-    */
+    printf("\n");*/
+
 
     return zigzag;
 }

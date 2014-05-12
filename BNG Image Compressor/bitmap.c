@@ -51,7 +51,21 @@ void BMPData_init(BMPData *bmp, FILE *image){
         bmp->data[i] = data_block;
         i++;
     }
-
+    /*for (i=0; i<(bmp->dataSize); i++)
+    {
+            if(i%24 == 0)
+                printf("\n");
+            printf("%d ",bmp->data[i]);
+    }
+    BMPData_blockify(bmp);
+    BMPData_unblockify(bmp);
+    printf("\n");
+    for (i=0; i<(bmp->dataSize); i++)
+    {
+            if(i%24 == 0)
+                printf("\n");
+            printf("%d ",bmp->data[i]);
+    }*/
     BMPData_blockify(bmp);
 }
 
