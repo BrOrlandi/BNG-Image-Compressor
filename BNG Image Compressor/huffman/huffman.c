@@ -1,5 +1,7 @@
 #include "huffman.h"
 
+#define MAX_ALLOCATION 100000
+
 void Huffman_init(Huffman *h){
     int i;
     for(i=0;i<256;i++){
@@ -96,7 +98,7 @@ void Huffman_build_tree(Huffman *h){
 }
 
 // depth-first to reach the codes
-void depthCodes(Node *root, char tcode[], int last, char **codes){
+void depthCodes(Node *root, char tcode[], int last, unsigned char **codes){
     if(root->l != NULL){
         tcode[last] = 0;
         depthCodes(root->l,tcode,last+1,codes);
@@ -119,11 +121,8 @@ void Huffman_generate_codes(Huffman *h){
     int i;
     for(i=0;i<256;i++){
         if(h->frequencies[i] > 0)
-            h->codes[i] = (char *)malloc(sizeof(char)*MAX_CODE_LENGTH);
+            h->codes[i] = (unsigned char *)malloc(sizeof(unsigned char)*MAX_CODE_LENGTH);
     }
-
-    int lastCode = 0;
-
     char tcode[MAX_CODE_LENGTH];
     depthCodes(h->htree,tcode,0,h->codes);
 
@@ -136,8 +135,6 @@ void Huffman_apply(Huffman *h){
 }
 
 void Huffman_compress_data_to_file(Huffman *h, char filename[]){
-
-    unsigned char *byteToCode[256];
     unsigned int i,j;
 
     BitWriter writer;
@@ -217,7 +214,7 @@ void Huffman_file_decompress(Huffman *h, char filename[]){
     Huffman_build_tree(h);
     Node *iterator = h->htree; // node to search codes in tree
 
-    unsigned int maxSize = 100;
+    unsigned int maxSize = MAX_ALLOCATION;
     unsigned char *data = (unsigned char *)malloc(sizeof(unsigned char)*maxSize);
     unsigned int pos = 0;
 
@@ -235,7 +232,7 @@ void Huffman_file_decompress(Huffman *h, char filename[]){
             data[pos] = iterator->byte;
             pos++;
             if(pos == maxSize){ // if reach max capacity realloc
-                maxSize += 100;
+                maxSize += MAX_ALLOCATION;
                 data = (unsigned char *)realloc(data,maxSize*sizeof(unsigned char));
             }
 

@@ -35,51 +35,7 @@ int main(int argc, char* argv[]) {
 
     Huffman_init(&h);
 
-    if(decompress){
-
-        printf("Decompressing: %s\n", inputFile);
-
-        unsigned char *data; // new data after decompress
-
-        Huffman_file_decompress(&h,inputFile);
-
-        data = h.uc_data[0];
-
-        int i = 0;
-        int width, height;
-
-        // Recuperando os dados que indicam a altura e largura da imagem
-        // Estes dados fora codificados em run_len.c
-        width = data[i++];
-        width |= (data[i++] & 255) << 8;
-        width |= (data[i++] & 255) << 16;
-        width |= (data[i++] & 255) << 24;
-
-        height = data[i++];
-        height |= (data[i++] & 255) << 8;
-        height |= (data[i++] & 255) << 8;
-        height |= (data[i++] & 255) << 8;
-
-        // Decode run_length encoded image
-        unsigned char *decoded = decode(data, width*height*3);
-
-        BMPData bitmap;
-        BMPData_from_raw(&bitmap, decoded, width, height);
-        BMPData_print(&bitmap);
-
-        unsigned char *file_data = calloc(bitmap.file_size, sizeof(unsigned char));
-        BMPData_HeaderToChar(&bitmap, file_data);
-
-        // Copia os dados do bitmap para o buffer que será usado para saída
-        for(i = 0; i < bitmap.dataSize; i++) {
-            file_data[i+54] = bitmap.data[i];
-        }
-
-
-        fileWrite(outputFile, file_data, bitmap.file_size);
-        printf("Image decompressed to: %s\n",outputFile);
-    }
-    else{ // otherwise, the file will be compres8sed in a bng file
+    if(!decompress){
 
         FILE *image;
         BMPData bitmap;
@@ -129,6 +85,50 @@ int main(int argc, char* argv[]) {
 
         BMPData_destroy(&bitmap);
         free(data);
+
+    }
+    else{ // otherwise, the file will be decompressed in a bng file
+        printf("Decompressing: %s\n", inputFile);
+
+        unsigned char *data; // new data after decompress
+
+        Huffman_file_decompress(&h,inputFile);
+
+        data = h.uc_data[0];
+
+        int i = 0;
+        int width, height;
+
+        // Recuperando os dados que indicam a altura e largura da imagem
+        // Estes dados fora codificados em run_len.c
+        width = data[i++];
+        width |= (data[i++] & 255) << 8;
+        width |= (data[i++] & 255) << 16;
+        width |= (data[i++] & 255) << 24;
+
+        height = data[i++];
+        height |= (data[i++] & 255) << 8;
+        height |= (data[i++] & 255) << 8;
+        height |= (data[i++] & 255) << 8;
+
+        // Decode run_length encoded image
+        unsigned char *decoded = decode(data, width*height*3);
+
+        BMPData bitmap;
+        BMPData_from_raw(&bitmap, decoded, width, height);
+        BMPData_print(&bitmap);
+
+        unsigned char *file_data = calloc(bitmap.file_size, sizeof(unsigned char));
+        BMPData_HeaderToChar(&bitmap, file_data);
+
+        // Copia os dados do bitmap para o buffer que será usado para saída
+        for(i = 0; i < bitmap.dataSize; i++) {
+            file_data[i+54] = bitmap.data[i];
+        }
+
+
+        fileWrite(outputFile, file_data, bitmap.file_size);
+        printf("Image decompressed to: %s\n",outputFile);
     }
     return 0;
 }
