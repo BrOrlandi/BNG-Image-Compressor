@@ -65,12 +65,13 @@ int main(int argc, char* argv[])
             //printf("%d ",bitmap.data[i]);
         }
         unsigned char *vector = vectorize(&bitmap); // vetorização de CADA bloco
+
         unsigned char *blocks = unvectorize(vector, bitmap.img_width*bitmap.img_height*3);
 
         printf("\n\n\n");
         for (i=0; i<(bitmap.dataSize); i++)
         {
-            if (bitmap.data[i] != blocks[i])
+            if (bitmap.block_data[i] != blocks[i])
             {
                 printf("errado");
             }
@@ -81,17 +82,6 @@ int main(int argc, char* argv[])
         }
         //-----------------------------
 
-        //unsigned char *vector = vectorize(&bitmap); // vetorização de CADA bloco
-
-        /*
-        unsigned char *blocks = unvectorize(vector, bitmap.dataSize);
-
-        int i;
-        for(i = 0; i < bitmap.dataSize; i++) {
-            if(blocks[i] != bitmap.block_data[i]) {
-                printf("%d: (%d) != (%d)\n", i, blocks[i], bitmap.block_data[i]);
-            }
-        }
         //        free(blocks);
         //        free(vector);
         /*
@@ -143,7 +133,7 @@ int main(int argc, char* argv[])
         }*/
 
 
-        data = RLE_encode(vector, bitmap.img_width, bitmap.img_height, &size);
+        //data = RLE_encode(vector, bitmap.img_width, bitmap.img_height, &size);
 
         //printf("bitmap.img_width = %d\n",bitmap.img_width);
         //printf("bitmap.img_height = %d\n",bitmap.img_height);
@@ -178,6 +168,25 @@ int main(int argc, char* argv[])
 //           }
 //        }
 
+        data = vector;
+        size = bitmap.dataSize;
+
+        unsigned char *head = (unsigned char *)malloc(8*sizeof(unsigned char));
+
+    head[0] = (bitmap.img_width) & 0xFF;
+    head[1] = (bitmap.img_width >> 8) & 0xFF;
+    head[2] = (bitmap.img_width >> 16) & 0xFF;
+    head[3] = (bitmap.img_width >> 24) & 0xFF;
+
+    head[4] = (bitmap.img_height) & 0xFF;
+    head[5] = (bitmap.img_height >> 8) & 0xFF;
+    head[6] = (bitmap.img_height >> 16) & 0xFF;
+    head[7] = (bitmap.img_height >> 24) & 0xFF;
+
+        printf("width = %d\nheight = %d\n",bitmap.img_width,bitmap.img_height);
+
+        Huffman_add_data_block(&h,head,8);
+
         Huffman_add_data_block(&h,data,size);
 
         Huffman_apply(&h);
@@ -203,8 +212,36 @@ int main(int argc, char* argv[])
         int width, height;
 
         // Decode run_length encoded image
-        unsigned char *decoded = RLE_decode(data, &width, &height);
-        unsigned char *blocks = unvectorize(decoded, width*height*3);
+        //unsigned char *decoded = RLE_decode(data, &width, &height);
+
+        /*
+            data[18] = (bmp->img_width) & 0xFF;
+    data[19] = (bmp->img_width >> 8) & 0xFF;
+    data[20] = (bmp->img_width >> 16) & 0xFF;
+    data[21] = (bmp->img_width >> 24) & 0xFF;
+
+    data[22] = (bmp->img_height) & 0xFF;
+    data[23] = (bmp->img_height >> 8) & 0xFF;
+    data[24] = (bmp->img_height >> 16) & 0xFF;
+    data[25] = (bmp->img_height >> 24) & 0xFF;
+        */
+
+        width=0;
+        width |= data[0];
+        width |= data[1] << 8;
+        width |= data[2] << 16;
+        width |= data[3] << 24;
+
+        height=0;
+        height |= data[4];
+        height |= data[5] << 8;
+        height |= data[6] << 16;
+        height |= data[7] << 24;
+
+        printf("width = %d\nheight = %d\n",width,height);
+
+        //unsigned char *blocks = unvectorize(decoded+54, width*height*3);
+        unsigned char *blocks = unvectorize(data+8, width*height*3);
 
         BMPData bitmap;
         //BMPData_from_raw(&bitmap, decoded, width, height);
