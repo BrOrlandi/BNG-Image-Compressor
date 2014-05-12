@@ -45,6 +45,8 @@ int main(int argc, char* argv[]) {
             printf("File not found: %s\n",inputFile);
             exit(1);
         }
+        printf("Compressing: %s\n", inputFile);
+
         BMPData_init(&bitmap, image);
 
 //        unsigned char *vector = vectorize(&bitmap);
@@ -58,8 +60,17 @@ int main(int argc, char* argv[]) {
 //        }
 //        free(blocks);
 //        free(vector);
+/*
         BMPData_print(&bitmap);
-        int size;
+        printf("\n--\n");
+        BMPData_print_block(&bitmap,0,0);
+        printf("\n--\n");
+        BMPData_print_block(&bitmap,0,1);
+        printf("\n--\n");
+        BMPData_print_block(&bitmap,0,2);
+        printf("\n--\n");
+*/
+        unsigned int size;
         unsigned char *data; // the data read from the file
 
         // Codificação por carreira
@@ -75,12 +86,7 @@ int main(int argc, char* argv[]) {
 //           }
 //        }
 
-        printf("Compressing: %s\n", inputFile);
-        unsigned char *header = (unsigned char *)malloc(54*sizeof(unsigned char));
-        BMPData_HeaderToChar(&bitmap,header);
-        Huffman_add_data_block(&h,header,54);
-        Huffman_add_data_block(&h,bitmap.data,bitmap.dataSize);
-//        Huffman_add_data_block(&h,data,size);
+        Huffman_add_data_block(&h,data,size);
 
         Huffman_apply(&h);
 

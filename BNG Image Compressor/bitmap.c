@@ -113,6 +113,7 @@ void BMPData_print(BMPData *bmp) {
     printf("color_imp:   (d) %u\n\n", bmp->color_imp);
 
     printf("trash_amount:(d) %u\n", bmp->trash_amount);
+    printf("block_data_length:(d) %u\n", bmp->block_data_length);
 }
 
 void BMPData_print_block(BMPData *bmp, int index, int color) {

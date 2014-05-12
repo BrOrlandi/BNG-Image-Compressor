@@ -1,6 +1,6 @@
 #include "run_len.h"
 
-void RLE_sanitize(unsigned char *vector, int data_size) {
+void RLE_sanitize(unsigned char *vector, unsigned int data_size) {
     int i;
     for(i = 0; i < data_size; i++) {
         if(vector[i] == RUN_LEN_FLAG) {
@@ -9,9 +9,9 @@ void RLE_sanitize(unsigned char *vector, int data_size) {
     }
 }
 
-unsigned char *RLE_encode(unsigned char *vector, int width, int height, int *size) {
+unsigned char *RLE_encode(unsigned char *vector, unsigned int width, unsigned int height, unsigned int *size) {
     int data_size = width * height * 3;
-    unsigned char *rle = (unsigned char*) calloc(data_size+2+8, sizeof(unsigned char));
+    unsigned char *rle = (unsigned char*) calloc(data_size+2+8, sizeof(unsigned char)); // +2 para as flags finais, +8 para 2 ints de altra e largura da imagem
 
     RLE_sanitize(vector, data_size);
 
@@ -47,6 +47,7 @@ unsigned char *RLE_encode(unsigned char *vector, int width, int height, int *siz
                 rle[writer++] = RUN_LEN_FLAG;
                 rle[writer++] = count;
                 rle[writer++] = last_char;
+                printf("Compressed: %d bytes\n",count-1);
                 count = 1;
             }
             else {
@@ -86,7 +87,7 @@ unsigned char *RLE_encode(unsigned char *vector, int width, int height, int *siz
     return rle;
 }
 
-unsigned char *RLE_decode(unsigned char *rle, int data_size) {
+unsigned char *RLE_decode(unsigned char *rle, unsigned int data_size) {
 
     int i = 8, j, count = 0;
 
