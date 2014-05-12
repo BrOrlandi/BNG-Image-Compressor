@@ -23,7 +23,7 @@ unsigned char *RLE_encode(unsigned char *vector, int width, int height, int *siz
 /**
     Decodifica o vetor por carreiras
 */
-unsigned char *RLE_decode(unsigned char *rle, int data_size);
+unsigned char *RLE_decode(unsigned char *rle, int *width, int *height);
 
 #endif // RUNLEN_H
 

@@ -86,9 +86,22 @@ unsigned char *RLE_encode(unsigned char *vector, int width, int height, int *siz
     return rle;
 }
 
-unsigned char *RLE_decode(unsigned char *rle, int data_size) {
+unsigned char *RLE_decode(unsigned char *rle, int *width, int *height) {
+
+    // Recuperando os dados que indicam a altura e largura da imagem
+    // Estes dados fora codificados
+    *width = rle[0];
+    *width |= (rle[1] & 255) << 8;
+    *width |= (rle[2] & 255) << 16;
+    *width |= (rle[3] & 255) << 24;
+
+    *height = rle[4];
+    *height |= (rle[5] & 255) << 8;
+    *height |= (rle[6] & 255) << 8;
+    *height |= (rle[7] & 255) << 8;
 
     int i = 8, j, count = 0;
+    int data_size = (*width) * (*height) * 3;
 
     unsigned char *rle_dec = (unsigned char*) calloc(data_size, sizeof(unsigned char));
 
