@@ -1,7 +1,7 @@
 #include "zigzag_vector.h"
 
-unsigned char *vectorize(BMPData *bmp) {
-    unsigned char *blocks = bmp->block_data;
+unsigned char *vectorize(BMPData *bmp, unsigned char *dctq) {
+    unsigned char *blocks = dctq;
     unsigned char *zigzag = calloc(bmp->dataSize, sizeof(unsigned char));
 
     int block_length = bmp->block_data_length;
