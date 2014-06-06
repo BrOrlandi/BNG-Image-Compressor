@@ -36,10 +36,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="bitmap.h" />
-		<Unit filename="dctq.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="dctq.h" />
 		<Unit filename="huffman/bitreader.c">
 			<Option compilerVar="CC" />
 		</Unit>

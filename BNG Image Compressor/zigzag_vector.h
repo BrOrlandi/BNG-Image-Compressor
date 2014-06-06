@@ -6,7 +6,7 @@
 
 #define ZIGZAG_H
 
-unsigned char *vectorize(BMPData *bmp, unsigned char *dctq);
+unsigned char *vectorize(BMPData *bmp);
 
 unsigned char *unvectorize(unsigned char *zigzag, int size);
 
