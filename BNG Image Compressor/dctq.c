@@ -1,6 +1,6 @@
 #include "dctq.h"
 
-double cons(int a)
+double cons(int a)//constantes usadas na DCT
 {
     if(a==0)
         return(1/sqrt(2));
@@ -19,7 +19,7 @@ unsigned char *dct(BMPData *bmp)
 
     int my_index[8][8];
     int a, b, i, j;
-    int tabela[8][8] = {{16,11,10,16,24,40,51,61},
+    int tabela[8][8] = {{16,11,10,16,24,40,51,61},//tabela do padrão JPEG
         {12,12,14,19,26,58,60,55},
         {14,13,16,24,40,57,69,56},
         {14,17,22,29,51,87,80,62},
@@ -32,13 +32,13 @@ unsigned char *dct(BMPData *bmp)
     double multi;
     double dct[8][8];
 
-    // Going through every block
+    //percorre todos os blocos
     for(k = 0; k < block_length; k++)
     {
-        // Zigzagging each block into the zigzag vector
-        // Putting colors in different vectors
+        //percorre as 3 cores (R, G, B)
         for(color = 0; color < 3; color++)
         {
+            //preenche uma matriz 8x8 de inteiros para os cálculos
             for(a=0; a<8; a++)
             {
                 for(b=0; b<8; b++)
@@ -55,6 +55,7 @@ unsigned char *dct(BMPData *bmp)
             {
                 for(j=0; j<8; j++)
                 {
+                    //cálculo do valor de cada coordenada da matriz transformada
                     multi = 0;
                     for(x=0; x<8; x++)
                     {
@@ -73,6 +74,7 @@ unsigned char *dct(BMPData *bmp)
                 {
                     quantizada[i][j] = (int)round(dct[i][j]/tabela[i][j]);
                     dctq[block_offset(k, i, j, color)] = quantizada[i][j]+128;
+                    //valor 128 subtraído será somado na descompressão, necessário para não estourar o tipo de dados uchar
                     //printf("%d ", dctq[block_offset(k, i, j, color)]);
                 }
                 //printf("\n");
@@ -90,7 +92,7 @@ unsigned char *idct(unsigned char *blocks, int size)
     int block_length = size / (8 * 8 * 3);
     int k, x, y, color;
 
-    int tabela[8][8] = {{16,11,10,16,24,40,51,61},
+    int tabela[8][8] = {{16,11,10,16,24,40,51,61},//tabela padrão JPEG
         {12,12,14,19,26,58,60,55},
         {14,13,16,24,40,57,69,56},
         {14,17,22,29,51,87,80,62},
@@ -106,13 +108,13 @@ unsigned char *idct(unsigned char *blocks, int size)
     int a,b,i,j;
     int idctt[8][8];
 
-    // Going through every block
+    //percorre cada bloco
     for(k = 0; k < block_length; k++)
     {
-        // Zigzagging each block into the zigzag vector
-        // Putting colors in different vectors
+        //percorre cada cor
         for(color = 0; color < 3; color++)
         {
+            //preenche matriz de int e soma de volta vlr 128
             for(a=0; a<8; a++)
             {
                 for(b=0; b<8; b++)
@@ -127,6 +129,7 @@ unsigned char *idct(unsigned char *blocks, int size)
                 //printf("\n");
             }
             //printf("\n");
+
             //DesQuantização
             for(i=0; i<8; i++)
             {
@@ -135,7 +138,7 @@ unsigned char *idct(unsigned char *blocks, int size)
                     desquantizada[i][j] = quantizada[i][j]*tabela[i][j];
                 }
             }
-            //IDCT
+            //IDCT - DCT inversa
             for(i=0; i<8; i++)
             {
                 for(j=0; j<8; j++)
