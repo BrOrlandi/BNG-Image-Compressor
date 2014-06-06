@@ -72,7 +72,7 @@ unsigned char *dct(BMPData *bmp)
                 for(j=0; j<8; j++)
                 {
                     quantizada[i][j] = (int)round(dct[i][j]/tabela[i][j]);
-                    dctq[block_offset(k, i, j, color)] = quantizada[i][j];
+                    dctq[block_offset(k, i, j, color)] = quantizada[i][j]+128;
                     //printf("%d ", dctq[block_offset(k, i, j, color)]);
                 }
                 //printf("\n");
@@ -120,7 +120,7 @@ unsigned char *idct(unsigned char *blocks, int size)
                     if(blocks[block_offset(k, a, b, color)] == 1){
                         quantizada[a][b] = 0;}
                     else{
-                    quantizada[a][b] = blocks[block_offset(k, a, b, color)];
+                    quantizada[a][b] = blocks[block_offset(k, a, b, color)]-128;
                     //printf("%d ", quantizada[a][b]);
                     }
                 }
