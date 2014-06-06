@@ -5,6 +5,7 @@
 #include "huffman/huffman.h"
 #include "zigzag_vector.h"
 #include "run_len.h"
+#include "dctq.h"
 #include <string.h>
 
 
@@ -56,7 +57,10 @@ int main(int argc, char* argv[])
 
         BMPData_init(&bitmap, image); // inicializa variábeis BMP e separa em blocos
 
-        unsigned char *vector = vectorize(&bitmap); // vetorização de CADA bloco
+        unsigned char *dctq = dct(&bitmap);
+
+
+        unsigned char *vector = vectorize(&bitmap, dctq); // vetorização de CADA bloco
 
         unsigned int size;
         unsigned char *data; // para armazena a compressão por carreira
@@ -94,8 +98,10 @@ int main(int argc, char* argv[])
 
         unsigned char *blocks = unvectorize(decoded, width*height*3);
 
+        unsigned char *idctq = idct(blocks, width*height*3);
+
         BMPData bitmap;
-        BMPData_from_raw(&bitmap, blocks, width, height);
+        BMPData_from_raw(&bitmap, idctq, width, height);
         //BMPData_print(&bitmap);
 
         unsigned char *file_data = calloc(bitmap.file_size, sizeof(unsigned char));
