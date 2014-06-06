@@ -2,11 +2,9 @@
 #include <stdlib.h.>
 #include "fileio.h"
 
-int fileWrite(char name[], unsigned char *data, unsigned int size)
+int fileWrite(FILE *file, unsigned char *data, unsigned int size)
 {
-    FILE *f = fopen(name,"wb");
-    fwrite(data,sizeof(unsigned char),size,f);
-    fclose(f);
+    fwrite(data,sizeof(unsigned char),size,file);
 }
 
 
