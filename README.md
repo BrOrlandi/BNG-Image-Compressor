@@ -17,15 +17,15 @@ Repositório
 
 Project
 ---------
-![Projeto](https://dl.dropboxusercontent.com/s/k9ydolezy7dji1g/Projeto.png "Projeto")
+![Projeto](https://raw.githubusercontent.com/BrOrlandi/BNG-Image-Compressor/master/Projeto.png "Projeto")
 
 Development Steps
 -----------
-![Fases](https://dl.dropboxusercontent.com/s/45drnqtaojjqqei/Fases.png "Fases")
+![Fases](https://raw.githubusercontent.com/BrOrlandi/BNG-Image-Compressor/master/Fases.png "Fases")
 
 Interfaces
 -----------
-![Interfaces](https://dl.dropboxusercontent.com/s/46r2wf276wl3mam/Interfaces.png "Interfaces")
+![Interfaces](https://raw.githubusercontent.com/BrOrlandi/BNG-Image-Compressor/master/Interfaces.png "Interfaces")
 
 About
 -------
